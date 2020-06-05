@@ -8,6 +8,7 @@ import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import TextareaAutosize from '@material-ui/core/TextareaAutosize';
 import Typography from '@material-ui/core/Typography';
+import Box from '@material-ui/core/Box';
 
 
 const useStyles = makeStyles({
@@ -23,16 +24,19 @@ const useStyles = makeStyles({
   * Method that will update front-end after new entry was done on the client side
   * without reloading the page
   * */ 
-const addEntry = async (newData, refetch) => {
-  const res = await fetch("/api/anonimize", {
+const addEntry = (newData, refetch) => {
+  return fetch("/api/anonimize", {
         method: 'post',
         headers: {
             "Content-Type": "application/json; charset=UTF-8"
         },
-        body: JSON.stringify({ ...newData, published_at: new Date() })
-    });
-    //and application will return an error
-    refetch();
+        body: JSON.stringify({...newData, published_at: new Date()})
+    }).then(
+        (res) => { //if result set returns anything except code '200' - some error occured 
+        //and application will return an error
+            refetch();
+        }
+    );
 }
 
 
@@ -55,16 +59,18 @@ export default function PlaylistTable({refetch, fetchResult}) {
         
         {fetchResult && fetchResult.data && fetchResult.data.map((p) => {
             return (
-                <Card className={classes.root}>
-                    <CardContent>
-                    <Typography gutterBottom variant="h5" component="h2">
-                        {p.title}
-                    </Typography>
-                    <Typography variant="body2" color="textSecondary" component="p">
-                        {p.content}
-                    </Typography>
-                </CardContent>  
-                </Card>
+                <Box mb={2} key={p.id} >
+                    <Card className={classes.root} >
+                        <CardContent>
+                        <Typography gutterBottom variant="h5" component="h2">
+                            {p.title}
+                        </Typography>
+                        <Typography variant="body2" color="textSecondary" component="p">
+                            {p.content}
+                        </Typography>
+                    </CardContent>  
+                    </Card>
+                </Box>
             )})
         }
     </div>

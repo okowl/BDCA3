@@ -1,0 +1,55 @@
+
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:sch="http://okowl.github.io/soap/words" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://okowl.github.io/soap/words" targetNamespace="http://okowl.github.io/soap/words">
+  <wsdl:types>
+    <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" targetNamespace="http://okowl.github.io/soap/words">
+    <xs:element name="getAnonymousPostRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="content" type="xs:string"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="getAnonymousPostResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="content" type="xs:string"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>
+  </wsdl:types>
+  <wsdl:message name="getAnonymousPostResponse">
+    <wsdl:part element="tns:getAnonymousPostResponse" name="getAnonymousPostResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getAnonymousPostRequest">
+    <wsdl:part element="tns:getAnonymousPostRequest" name="getAnonymousPostRequest">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:portType name="PostPort">
+    <wsdl:operation name="getAnonymousPost">
+      <wsdl:input message="tns:getAnonymousPostRequest" name="getAnonymousPostRequest">
+    </wsdl:input>
+      <wsdl:output message="tns:getAnonymousPostResponse" name="getAnonymousPostResponse">
+    </wsdl:output>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="PostPortSoap11" type="tns:PostPort">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="getAnonymousPost">
+      <soap:operation soapAction=""/>
+      <wsdl:input name="getAnonymousPostRequest">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="getAnonymousPostResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="PostPortService">
+    <wsdl:port binding="tns:PostPortSoap11" name="PostPortSoap11">
+      <soap:address location="https://bdca3-owlet.duckdns.org/ws"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

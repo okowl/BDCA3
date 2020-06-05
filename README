@@ -3,3 +3,4 @@ This is a project for a CCT Dublin (BD CA 3)
 It is a React application bundled with Parcel that is a frontend for querying SOAP service that anonymises posts.
 It uses Material UI and css in js approach to styling components.
 
+Deployed app could be found here: https://bdca3.herokuapp.com/

@@ -49,7 +49,7 @@
   </wsdl:binding>
   <wsdl:service name="PostPortService">
     <wsdl:port binding="tns:PostPortSoap11" name="PostPortSoap11">
-      <soap:address location="https://bdca3-owlet.duckdns.org/ws"/>
+      <soap:address location="http://bdca3-owlet.duckdns.org/ws"/>
     </wsdl:port>
   </wsdl:service>
 </wsdl:definitions>

@@ -5,7 +5,7 @@ import 'typeface-roboto';
 import PostCard from './client/PostCard.react';
 
 /**
- * Method to retrive all information from DB and display it
+ * Method to retrive all information and display it
  */
 const getAllEntries = (setFetchResult) => {
     fetch("/api/posts").then(

@@ -40,7 +40,7 @@ const addEntry = (newData, refetch) => {
 }
 
 
-export default function PlaylistTable({refetch, fetchResult}) {
+export default function MainScreen({refetch, fetchResult}) {
   const [post, setPost] = React.useState({});
   const classes = useStyles();
     

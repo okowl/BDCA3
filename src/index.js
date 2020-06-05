@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import Button from '@material-ui/core/Button';
 import 'typeface-roboto';
-import PlaylistTable from './client/PlaylistTable.react';
+import PostCard from './client/PostCard.react';
 
 /**
  * Method to retrive all information from DB and display it
@@ -31,7 +31,7 @@ const App = () => {
     }, []);
 
     return (
-        <PlaylistTable refetch={refetch} fetchResult={fetchResult} />
+        <PostCard refetch={refetch} fetchResult={fetchResult} />
     );
 }
 

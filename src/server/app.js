@@ -6,7 +6,9 @@ const express = require('express');
 const app = express();
 const port = process.env.PORT || 3000;
 const address = process.env.IP || "0.0.0.0";
-const EasySoap = require('easysoap');
+const soap = require('soap');
+
+var path = require('path');
 
 const jsonErrorHandler = async (err, req, res, next) => {
   res.status(500).send({ error: err });
@@ -17,25 +19,24 @@ app.use(jsonErrorHandler);
 
 let postAutoincrement = 0;
 const posts = [
-    {
-        content: 'Hello world',
-        published_at: new Date(),
-        title: "HELLO WORLD"
-    }
 ];
 
 
-// define soap params
-const params = {
-    host: 'bdca3-owlet.duckdns.org',
-    path: '/ws',
-    wsdl: '/ws/posts.wsdl'
-};
+const localPath = path.join(__dirname, '..', 'soap', 'posts.wsdl');
+const soapURL = localPath;
+let soapClient = null;
+soap.createClient(soapURL, function(err, client) {
+    soapClient = client;
+    if (err) {
+    console.log('Error while booting the application', err);
+    return;
+    }
+    console.log("Loaded soap client successfully", soapClient);
+    app.listen(port, address, function() {
+        console.log("Server listening at", address + ":" + port);
+    });
+});
 
-/*
-    * create the client
-    */
-var soapClient = EasySoap(params);
 /**
  * CREATE OR UPDATE
  */
@@ -46,33 +47,23 @@ app.post('/api/anonimize', (req, res) => {
         title
     } = req.body;
     
-    
-    /*
-    * call soap method`
-    */
-    soapClient.call({
-        method    : 'getAnonymousPost',
-        attributes: {
-            xmlns: 'http://okowl.github.io/soap/words'
-        },
-        params: {
-            content:"hello",
+     const args = {content};
+     soapClient.getAnonymousPost(args, function(err, result) {
+         if (err) {
+            console.error(err);
+            return;
         }
-    })
-    .then((callResponse) => {
-        console.log(callResponse.data);	// response data as json
-        console.log(callResponse.body);	// response body
-        console.log(callResponse.header);  //response header
         postAutoincrement += 1;
         const newPost = {
-            content: callResponse.data,
+            id: postAutoincrement,
+            content: result.content,
             published_at,
             title,
         };
-        posts[postAutoincrement] = newPost;
+        posts.push(newPost);
         res.send({newPost});
-    })
-    .catch((err) => { throw new Error(err); });
+    
+      });
 });
 
 /**
@@ -82,6 +73,4 @@ app.get('/api/posts', (_, res) => {
     res.send(posts);
 });
 
-app.listen(port, address, function() {
-    console.log("Server listening at", address + ":" + port);
-});
+

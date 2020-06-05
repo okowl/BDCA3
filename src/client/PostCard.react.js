@@ -23,19 +23,16 @@ const useStyles = makeStyles({
   * Method that will update front-end after new entry was done on the client side
   * without reloading the page
   * */ 
-const addEntry = (newData, refetch) => {
-  return fetch("/api/anonimize", {
+const addEntry = async (newData, refetch) => {
+  const res = await fetch("/api/anonimize", {
         method: 'post',
         headers: {
             "Content-Type": "application/json; charset=UTF-8"
         },
-        body: JSON.stringify({...newData, published_at: new Date()})
-    }).then(
-        (res) => { //if result set returns anything except code '200' - some error occured 
-        //and application will return an error
-            refetch();
-        }
-    );
+        body: JSON.stringify({ ...newData, published_at: new Date() })
+    });
+    //and application will return an error
+    refetch();
 }
 
 
